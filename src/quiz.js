@@ -45,4 +45,8 @@ class Quiz {
         }
         return true
     }
+    filterQuestionsByDifficulty(difficulty) {
+        return this.getQuestion.difficulty(this.difficulty.filter(levelOfdificulty => 1 && levelOfdificulty <= 3))
+        
+        }
 }
