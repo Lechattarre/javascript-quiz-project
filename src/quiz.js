@@ -1,48 +1,65 @@
 class Quiz {
-
     constructor(questions, timeLimit, timeRemaining) {
-
         this.questions = questions
         this.timeLimit = timeLimit
         this.timeRemaining = timeRemaining
         this.correctAnswers = 0
         this.currentQuestionIndex = 0
     }
+
     getQuestion() {
-
-        return this.questions[this.currentQuestionIndex];
-
+        return this.questions[this.currentQuestionIndex]
     }
 
     moveToNextQuestion() {
-
-        if (this.currentQuestionIndex < this.questions.length - 1) {
-
-            this.currentQuestionIndex++;
-        }
-        return this.currentQuestionIndex
+        this.currentQuestionIndex++
     }
 
     shuffleQuestions() {
-        for (let i = this.questions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [this.questions[i], this.questions[j]] = [this.questions[j], this.questions[i]];
-        }
+        this.questions.sort(() => .5 - Math.random());
     }
 
-    checkAnswer(answer) {
+    checkAnswer(answerToCheck) {
 
-        if (answer === this.questions[this.currentQuestionIndex].answer) {
-            this.correctAnswers += 1;
-            return true;
+        console.log(answerToCheck)
+
+        const correctAnswer = this.getQuestion().answer
+        if (answerToCheck === correctAnswer) {
+            this.correctAnswers++
         }
-        return false;
+
+        console.log('VAN', this.correctAnswers)
     }
 
     hasEnded() {
-        if (this.currentQuestionIndex < this.questions.length) {
-            return false
+        return this.currentQuestionIndex >= this.questions.length
+    }
+
+    filterQuestionsByDifficulty(difficulty) {
+
+        if (difficulty > 0 && difficulty < 4 && !isNaN(difficulty)) {
+
+            const filteredQuestions = this.questions.filter(eachQuestion => {
+                return eachQuestion.difficulty === difficulty
+            })
+
+            this.questions = filteredQuestions
         }
-        return true
+    }
+
+    averageDifficulty() {
+
+        const sumDifficulty = this.questions.reduce((acc, eachQuestion) => {
+
+            // if (eachPresident.leftOffice === null) {
+            //     return acc
+            // }
+
+            return acc + eachQuestion.difficulty
+        }, 0)
+
+        const average = sumDifficulty / this.questions.length
+
+        return average
     }
 }
